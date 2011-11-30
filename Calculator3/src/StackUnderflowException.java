@@ -1,4 +1,4 @@
-package stack;
+
 /**
  * This Exception will be throw if the Stack is actually empty
  * 

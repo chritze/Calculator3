@@ -1,4 +1,4 @@
-package stack;
+
 /**
  * This class represents a single node of a Stack data-structure
  * 

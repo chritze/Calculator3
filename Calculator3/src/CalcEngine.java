@@ -1,8 +1,3 @@
-package calculator;
-
-import postfix.BadFormatException;
-import postfix.Postfix;
-
 /**
  * The main part of the calculator doing the calculations.
  * 

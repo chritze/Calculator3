@@ -1,4 +1,4 @@
-package stack;
+
 /**
  * This is the implementation of the interface MyStack. This class simply
  * reproduce a Stack data-structure using a Double Linked List

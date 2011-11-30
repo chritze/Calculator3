@@ -1,4 +1,4 @@
-package stack;
+
 /**
  * This is the interface for our Stack data-structure
  * 
