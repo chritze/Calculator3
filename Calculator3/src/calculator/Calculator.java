@@ -1,4 +1,4 @@
-package calcEngine;
+package calculator;
 /**
  * The main class of a simple calculator. Create one of these and you'll
  * get the calculator on screen.

@@ -1,4 +1,5 @@
-package calcEngine;
+package calculator;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -14,15 +15,15 @@ import javax.swing.border.*;
  */
 public class UserInterface implements ActionListener {
 	private CalcEngine calc;
-	private boolean showingAuthor;
 
 	private JFrame frame;
 	private JTextField display;
 	private JTextField hexDisplay;
-	private JLabel status;
+	private JTextField postfixDisplay;
 	private JPanel buttonPanel;
 	private JPanel hexPanel;
 	private JCheckBox hexButton;
+	private JCheckBox postfixButton;
 
 	/**
 	 * Create a user interface.
@@ -32,9 +33,9 @@ public class UserInterface implements ActionListener {
 	 */
 	public UserInterface(CalcEngine engine) {
 		calc = engine;
-		showingAuthor = true;
 		makeFrame();
 		frame.setVisible(true);
+		frame.setSize(250, 320);
 	}
 
 	/**
@@ -52,7 +53,7 @@ public class UserInterface implements ActionListener {
 	 */
 	private void makeFrame() {
 		frame = new JFrame(calc.getTitle());
-
+		
 		JPanel contentPane = (JPanel) frame.getContentPane();
 		contentPane.setLayout(new BorderLayout(8, 8));
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -90,7 +91,7 @@ public class UserInterface implements ActionListener {
 		addButton(hexPanel, "E");
 		addButton(hexPanel, "F");
 		addButton(buttonPanel, "CE");
-		
+
 		hexPanel.setVisible(false);
 		contentPane.add(buttonPanel, BorderLayout.CENTER);
 		contentPane.add(hexPanel, BorderLayout.LINE_END);
@@ -105,18 +106,33 @@ public class UserInterface implements ActionListener {
 				} else {
 					hexPanel.setVisible(true);
 					hexDisplay.setVisible(true);
-					hexButton.setText("Hex:");
+					hexButton.setText("Hex:");					
 				}
 			}
 		});
 		buttonPanel.add(hexButton);
 		hexDisplay = new JTextField();
 		buttonPanel.add(hexDisplay);
+		postfixButton = new JCheckBox("RPN");
+		buttonPanel.add(postfixButton);
+		postfixButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (postfixDisplay.isVisible()) {
+					postfixDisplay.setVisible(false);
+					postfixButton.setText("RPN");
+				} else {
+					postfixDisplay.setVisible(true);
+					postfixButton.setText("RPN:");
+				}
+			}
+		});
 		hexDisplay.setVisible(false);
 
-		status = new JLabel(calc.getAuthor());
-		contentPane.add(status, BorderLayout.SOUTH);
-
+		postfixDisplay = new JTextField();
+		postfixDisplay.setVisible(false);
+		contentPane.add(postfixDisplay, BorderLayout.SOUTH);
+		
+		
 		frame.pack();
 	}
 
@@ -161,11 +177,11 @@ public class UserInterface implements ActionListener {
 		} else if (command.equals("-")) {
 			calc.minus();
 		} else if (command.equals("=")) {
+			postfixDisplay.setText(calc.getRPN());
 			calc.equals();
 		} else if (command.equals("CE")) {
+			postfixDisplay.setText("");
 			calc.clear();
-		} else if (command.equals("?")) {
-			showInfo();
 		} else if (command.equals("*")) {
 			calc.multiply();
 		} else if (command.equals("/")) {
@@ -182,18 +198,5 @@ public class UserInterface implements ActionListener {
 	private void redisplay() {
 		display.setText("" + calc.getDisplayValue());
 		hexDisplay.setText(calc.getHexValue());
-	}
-
-	/**
-	 * Toggle the info display in the calculator's status area between the
-	 * author and version information.
-	 */
-	private void showInfo() {
-		if (showingAuthor)
-			status.setText(calc.getVersion());
-		else
-			status.setText(calc.getAuthor());
-
-		showingAuthor = !showingAuthor;
 	}
 }

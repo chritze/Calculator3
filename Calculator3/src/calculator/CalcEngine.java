@@ -1,4 +1,8 @@
-package calcEngine;
+package calculator;
+
+import postfix.BadFormatException;
+import postfix.Postfix;
+
 /**
  * The main part of the calculator doing the calculations.
  * 
@@ -47,7 +51,21 @@ public class CalcEngine {
 	public String getHexValue() {
 		return Integer.toHexString(this.getDisplayValue()).toUpperCase();
 	}
-
+	
+	/**
+	 * @return The RPN for the inserted expression
+	 */
+	public String getRPN() {
+		Postfix converter = new Postfix();
+		String postfix = "";
+		try {
+			postfix += converter.infixToPostfix(leftOperand + "" + lastOperator + displayValue);
+		} catch (BadFormatException e) {
+			e.printStackTrace();
+		}
+		return postfix;
+	}
+	
 	/**
 	 * A number button was pressed. Either start a new operand, or incorporate
 	 * this number as the least significant digit of an existing one.
